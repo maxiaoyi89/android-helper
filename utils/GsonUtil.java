@@ -14,7 +14,12 @@ import com.google.gson.Gson;
  * </pre>
  */
 public class GsonUtil {
-	
+
+	private GsonUtil(){
+		/* cannot be instantiated */
+		throw new UnsupportedOperationException("cannot be instantiated");
+	}
+
 	/** 用于解析json的类 */
 	private static final Gson GSON = new Gson();
 
