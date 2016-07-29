@@ -9,7 +9,7 @@ public class ToastUtil {
 
 	private ToastUtil(){
 		/* cannot be instantiated */
-		throw new UnsupportedOperationException("cannot be instantiated");
+		throw new UnsupportedOperationException("ToastUtil cannot be instantiated !");
 	}
 
 	private static Toast getInstance(Context context) {

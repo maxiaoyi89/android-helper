@@ -6,6 +6,10 @@ import android.content.res.Resources;
 
 public class DensityUtil {
 
+    private DensityUtil(){
+		/* cannot be instantiated */
+        throw new UnsupportedOperationException("DensityUtil cannot be instantiated !");
+    }
 
     public static int dp2px(Context context, float dpValue) {  
         final float scale = context.getResources().getDisplayMetrics().density;

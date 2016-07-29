@@ -9,7 +9,7 @@ public class PreferenceUtil {
 
 	private PreferenceUtil(){
 		/* cannot be instantiated */
-		throw new UnsupportedOperationException("cannot be instantiated");
+		throw new UnsupportedOperationException("PreferenceUtil cannot be instantiated !");
 	}
 
 

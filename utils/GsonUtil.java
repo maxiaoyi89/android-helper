@@ -17,7 +17,7 @@ public class GsonUtil {
 
 	private GsonUtil(){
 		/* cannot be instantiated */
-		throw new UnsupportedOperationException("cannot be instantiated");
+		throw new UnsupportedOperationException("GsonUtil cannot be instantiated !");
 	}
 
 	/** 用于解析json的类 */
