@@ -1,4 +1,4 @@
-package com.ssyijiu.ahelper;
+package com.ssyijiu.ahelper.widget;
 
 
 import android.app.Dialog;
@@ -9,13 +9,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.ssyijiu.eventbusdemo.R;
+
 
 /**
  * Created by ssyijiu on 2016/8/16.
  * Github: ssyijiu
  * E-mail: lxmyijiu@163.com
  */
-public class AlertDialog extends Dialog implements View.OnClickListener {
+public class SimpleDialog extends Dialog implements View.OnClickListener {
 
     private TextView btnConfirm;
     private TextView btnCancel;
@@ -29,17 +31,16 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
     private View lineHorizontal;
     private View lineVertical;
 
-    private View contentView;
 
 
 
-    public AlertDialog(Context context, String title, String message) {
+    public SimpleDialog(Context context, String title, String message) {
         super(context);
         this.title = title;
         this.message = message;
         initView(context);
     }
-    public AlertDialog(Context context) {
+    public SimpleDialog(Context context) {
         super(context);
         initView(context);
     }
@@ -47,9 +48,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
     private void initView(Context context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        contentView = View.inflate(context,R.layout.alert_dialog_layout,null);
-
-        this.setContentView(contentView);
+        this.setContentView(R.layout.simpledialog_layout);
 
         btnConfirm = (TextView) findViewById(R.id.btn_confirm);
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
@@ -63,7 +62,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
         setTitle(title);
         setMessage(message);
 
-        hasCancelButton(false);
+        isHasNegativeView(false);
 
         btnConfirm.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
@@ -74,7 +73,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
      * @param title
      * @return
      */
-    public AlertDialog setTitle(String title) {
+    public SimpleDialog setTitle(String title) {
         this.title = title;
         if(!TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
@@ -85,7 +84,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public AlertDialog setMessage(String message) {
+    public SimpleDialog setMessage(String message) {
         this.message = message;
         if(!TextUtils.isEmpty(message)) {
             tvMessage.setText(this.message);
@@ -100,7 +99,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
      * @param listener
      * @return
      */
-    public AlertDialog setPositiveView(String confirm_text, View.OnClickListener listener) {
+    public SimpleDialog setPositiveView(String confirm_text, View.OnClickListener listener) {
 
         if(!TextUtils.isEmpty(confirm_text)) {
             btnConfirm.setText(confirm_text);
@@ -119,8 +118,8 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
      * @param listener
      * @return
      */
-    public AlertDialog setNegativeView(String cancel_text, View.OnClickListener listener) {
-        hasCancelButton(true);
+    public SimpleDialog setNegativeView(String cancel_text, View.OnClickListener listener) {
+        isHasNegativeView(true);
         if(!TextUtils.isEmpty(cancel_text)) {
             btnCancel.setText(cancel_text);
         }
@@ -131,7 +130,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    private void hasCancelButton(boolean flag) {
+    private void isHasNegativeView(boolean flag) {
         btnCancel.setVisibility(flag ? View.VISIBLE:View.GONE);
         lineVertical.setVisibility(flag ? View.VISIBLE:View.GONE);
 
@@ -147,7 +146,7 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
      * 设置分割线的颜色
      * @param color
      */
-    public AlertDialog setLineColor(int color) {
+    public SimpleDialog setLineColor(int color) {
         lineVertical.setBackgroundColor(color);
         lineHorizontal.setBackgroundColor(color);
         return this;
@@ -155,11 +154,11 @@ public class AlertDialog extends Dialog implements View.OnClickListener {
 
 
     /**
-     * 设置Dialog的宽度
+     * 设置Dialog的宽度, 单位px
      * @param width
      * @return
      */
-    public AlertDialog setWidth(int width) {
+    public SimpleDialog setWidth(int width) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
         getWindow().setAttributes(lp);
