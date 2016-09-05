@@ -27,8 +27,8 @@ public class DensityUtil {
         return (int) (pxValue / scale + 0.5f);  
     }
 
-    public static int sp2px(Resources resources, float spValue){
-        final float scale = resources.getDisplayMetrics().scaledDensity;
+    public static int sp2px(Context context, float spValue){
+        final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * scale + 0.5f);
     }
 }
