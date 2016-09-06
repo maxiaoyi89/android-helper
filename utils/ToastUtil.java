@@ -1,8 +1,9 @@
 package com.ssyijiu.ahelper;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.Toast;
+import android.text.TextUtils;
+import android.view.Gravity;
 
 public class ToastUtil {
 	private static Toast mToast;
@@ -20,7 +21,20 @@ public class ToastUtil {
 	}
 
 	public static void show(Context mContext, String msg) {
+		if(TextUtils.isEmpty(msg)) {
+			return ;
+		}
 		mToast = getInstance(mContext);
+		mToast.setText(msg);
+		mToast.show();
+	}
+
+	public static void showCenter(Context mContext, String msg) {
+		if(TextUtils.isEmpty(msg)) {
+			return ;
+		}
+		mToast = getInstance(mContext);
+		mToast.setGravity(Gravity.CENTER, 0, 10);
 		mToast.setText(msg);
 		mToast.show();
 	}
