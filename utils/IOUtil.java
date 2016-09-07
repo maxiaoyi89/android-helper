@@ -13,9 +13,9 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
 /**
- * 流操作工具类
- * @author lxm
- *
+ * Created by ssyijiu on 2016/9/7.
+ * Github: ssyijiu
+ * E-mail: lxmyijiu@163.com
  */
 public class IOUtil {
 	/** 关闭流 */
@@ -29,7 +29,7 @@ public class IOUtil {
 		return true;
 	}
 
-	/** 关闭流Cursor */
+	/** 关闭Cursor */
 	public static boolean close(Cursor cursor) {
 		if (cursor != null) {
 				cursor.close();
