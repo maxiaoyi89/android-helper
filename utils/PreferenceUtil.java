@@ -82,18 +82,14 @@ public class PreferenceUtil {
 
 
 	// 如果需要一个单独的SharedPreferences来保存某些数据，例如：token，可以这样：
-	private static final String PRE_TOKEN = "token";
 	private static SharedPreferences getInstance(Context context, String preferenceName) {
 		if(sp == null) {
-			synchronized (PreferenceUtil.class) {
-				if(sp == null) {
-					sp = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
-				}
-			}
+			sp = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 		}
 		return sp;
 	}
 
+	private static final String PRE_TOKEN = "token";
 	public static void putToken(Context context, String token) {
 		sp = getInstance(context,PRE_TOKEN);
 		sp.edit().putString(PRE_TOKEN, token).apply();

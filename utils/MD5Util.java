@@ -1,7 +1,10 @@
 package com.ssyijiu.ahelper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -29,91 +32,88 @@ public class MD5Util {
 	 * @return 密文
 	 */
 	public static String getMD5(byte[] data) {
-	     
+		byte[] digest;
         try {
             // 获得MD5摘要算法的 MessageDigest 对象
             MessageDigest md = MessageDigest.getInstance("MD5");
             // 使用指定的字节更新摘要
             md.update(data);
-            // 获得密文
-            byte[] digest = md.digest();
-            // 把密文转换成十六进制的字符串形式
-            return new String(bytes2Hex(digest));
-        } catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}  
-		return "";
+
+            digest = md.digest();
+
+        } catch (NoSuchAlgorithmException neverHappened) {
+			throw new RuntimeException(neverHappened);
+		}
+		// 把密文转换成十六进制的字符串形式
+		return new String(bytes2Hex(digest));
     }
-	
-	
+
 	/**
-	 * 非标准MD5加密，防止大数据库暴力破解
+	 * MD5加密,获取后10密文
 	 * @param data 明文
-	 * @return 密文
+	 * @return 后10位密文
 	 */
-	public static String getMD5NoStandard(String data) {
-        return getMD5NoStandard(data.getBytes());
-    }
-	
+	public static String getMD5_10(String data) {
+		return getMD5_10(data.getBytes());
+	}
+
 	/**
-	 * 非标准MD5加密，防止大数据库暴力破解
+	 * MD5加密,获取后10密文
 	 * @param data 明文数组
-	 * @return 密文
+	 * @return 后10位密文
 	 */
-	public static String getMD5NoStandard(byte[] data) {
-	     
-        try {
-            // 获得MD5摘要算法的 MessageDigest 对象
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            // 使用指定的字节更新摘要
-            md.update(data);
-            // 获得密文
-            byte[] digest = md.digest();
-            // 把密文转换成十六进制的字符串形式
-            return new String(bytes2HexNoStandard(digest));
-        } catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}  
-		return "";
-    }
+	public static String getMD5_10(byte[] data) {
+		byte[] digest;
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(data);
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException neverHappened) {
+			throw new RuntimeException(neverHappened);
+		}
+		return new String(bytes2Hex(digest)).substring(22);
+	}
+	
+	
+
     
     /**
      * 获取一个文件的MD5校验码
      * @param path 文件路径
      * @return MD5检验码
      */
-    public static String getMD5File(String path) {
+	public static String getMD5File(String path) throws IOException {
+
+		File file = new File(path);
 
 		FileInputStream in = null;
+		FileChannel ch = null;
+		byte[] digest = null;
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			in = new FileInputStream(path);
-
-			int len = 0;
-			byte[] buffer = new byte[1024];
-
-			while ((len = in.read(buffer)) != -1) {
-				md.update(buffer, 0, len);
-			}
-
-			byte digest[] = md.digest();
-
-	        return bytes2Hex(digest); 
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			in = new FileInputStream(file);
+			ch = in.getChannel();
+			MappedByteBuffer byteBuffer = ch.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+			md.update(byteBuffer);
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException neverHappened) {
+			throw new RuntimeException(neverHappened);
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
-				} catch (IOException e) {
+				} catch (IOException ignored) {
+				}
+			}
+			if (ch != null) {
+				try {
+					ch.close();
+				} catch (IOException ignored) {
 				}
 			}
 		}
 
-		return "";
+		return bytes2Hex(digest);
 	}
     
     
@@ -125,19 +125,6 @@ public class MD5Util {
         for (int i = 0, j = 0; i < src.length; i++) {
             res[j++] = hexDigits[src[i] >>> 4 & 0x0f];
             res[j++] = hexDigits[src[i] & 0x0f];
-        }
-        return new String(res);
-    }
-    
-    /**
-     * 一个byte转为2个hex字符，非标准
-     */
-    private static String bytes2HexNoStandard(byte[] src) {
-    	
-        char[] res = new char[src.length * 2];
-        for (int i = 0, j = 0; i < src.length; i++) {
-            res[j++] = hexDigits[(src[i]>>1) >>> 4 & 0x0f];
-            res[j++] = hexDigits[(src[i]<<1) & 0x0f];
         }
         return new String(res);
     }

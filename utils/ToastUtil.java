@@ -20,21 +20,21 @@ public class ToastUtil {
 		return mToast;
 	}
 
-	public static void show(Context mContext, String msg) {
+	public static void show(Context context, String msg) {
 		if(TextUtils.isEmpty(msg)) {
 			return ;
 		}
-		mToast = getInstance(mContext);
+		mToast = getInstance(context);
 		mToast.setText(msg);
 		mToast.show();
 	}
 
-	public static void showCenter(Context mContext, String msg) {
+	public static void showCenter(Context context, String msg) {
 		if(TextUtils.isEmpty(msg)) {
 			return ;
 		}
-		mToast = getInstance(mContext);
-		mToast.setGravity(Gravity.CENTER, 0, 10);
+		mToast = getInstance(context);
+		mToast.setGravity(Gravity.CENTER, 0, 0);
 		mToast.setText(msg);
 		mToast.show();
 	}
