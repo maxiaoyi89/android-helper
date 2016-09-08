@@ -4,18 +4,23 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by ssyijiu on 2016/9/7.
- * Github: ssyijiu
- * E-mail: lxmyijiu@163.com
+ * 流操作工具类
+ * @author lxm
+ *
  */
 public class IOUtil {
 	/** 关闭流 */
@@ -29,7 +34,7 @@ public class IOUtil {
 		return true;
 	}
 
-	/** 关闭Cursor */
+	/** 关闭流Cursor */
 	public static boolean close(Cursor cursor) {
 		if (cursor != null) {
 				cursor.close();
@@ -66,38 +71,23 @@ public class IOUtil {
 	/**
 	 * 流转字符串, 异常返回 ""
 	 */
-	public static String stream2String(InputStream in,String charset) {
-		if(TextUtils.isEmpty(charset)) {
-			charset = "UTF-8";
-		}
-
-		if (!(in instanceof BufferedInputStream)) {
-			in = new BufferedInputStream(in);
-		}
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		int len;
-		byte[] buf = new byte[1024];
-		
-		try {
-			while((len = in.read(buf)) != -1) {
-				out.write(buf, 0, len);
-			}
-			return out.toString(charset);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			close(in);
-			close(out);
-		}
-		return "";
-	}
-
-	/**
-	 * 流转字符串, 异常返回 ""
-	 */
 	public static String stream2String(InputStream in) throws IOException {
 		return stream2String(in, "UTF-8");
 	}
 
+
+	/**
+	 * 流转字符串, 异常返回 ""
+	 */
+	public static String stream2String(InputStream in,String charset) {
+		if(TextUtils.isEmpty(charset)) {
+			charset = "UTF-8";
+		}
+		try {
+			return new String(stream2Bytes(in),charset);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }
